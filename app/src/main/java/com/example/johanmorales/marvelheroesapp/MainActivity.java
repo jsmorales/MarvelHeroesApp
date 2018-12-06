@@ -4,8 +4,18 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.security.NoSuchAlgorithmException;
+import com.example.johanmorales.marvelheroesapp.API.MarvelService;
+import com.example.johanmorales.marvelheroesapp.Models.BaseResponse;
+import com.example.johanmorales.marvelheroesapp.Models.Data;
+import com.example.johanmorales.marvelheroesapp.Models.SuperHero;
+
+import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /*
 * Librerias usadas por gradle
@@ -27,14 +37,33 @@ public class MainActivity extends AppCompatActivity {
 
         hashTextView = findViewById(R.id.hashTextView);
 
-        try {
-            Log.d(TAG,"Intentando obtener hash:");
-            Log.d(TAG,Autenticacion.getHash());
+        Log.d(TAG,"Intentando obtener hash:");
+        Log.d(TAG,Autenticacion.getHash());
 
-            hashTextView.setText(Autenticacion.getHash());
+        //hashTextView.setText(Autenticacion.getHash());
 
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+        //probando retrofit
+
+        //se crea la llamada de acuerdo a la implementacion hecha
+        Call<BaseResponse<Data<ArrayList<SuperHero>>>> superHeroesCall = MarvelService.getMarvelApi().getHeroes(354);
+
+        //se ejecuta el metodo para poner la peticion en fila sobreecribiendo los metodos
+        superHeroesCall.enqueue(new Callback<BaseResponse<Data<ArrayList<SuperHero>>>>() {
+            @Override
+            public void onResponse(Call<BaseResponse<Data<ArrayList<SuperHero>>>> call, Response<BaseResponse<Data<ArrayList<SuperHero>>>> response) {
+
+                SuperHero hero0 = response.body().getData().getResults().get(0);
+
+                Toast.makeText(MainActivity.this, "Hero Name: "+hero0.getName(), Toast.LENGTH_SHORT).show();
+
+                hashTextView.setText(hero0.getName());
+            }
+
+            @Override
+            public void onFailure(Call<BaseResponse<Data<ArrayList<SuperHero>>>> call, Throwable t) {
+                Toast.makeText(MainActivity.this, "Algo salió mal.", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
 }
