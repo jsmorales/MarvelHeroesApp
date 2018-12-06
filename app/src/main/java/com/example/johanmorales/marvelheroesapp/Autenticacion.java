@@ -14,9 +14,27 @@ public class Autenticacion {
 
     public static String getHash() throws NoSuchAlgorithmException {
 
-        //db963a1820699d2ca3b1b041a2133e68
-
         String unconvertedHash = TS+PRIVATE_KEY+PUBLIC_KEY;
+
+        MessageDigest md = MessageDigest.getInstance("MD5");
+
+        md.update(unconvertedHash.getBytes());
+
+        byte messageDigest[] = md.digest();
+
+        StringBuilder hexString = new StringBuilder();
+
+        for (byte aMessageDigest : messageDigest) {
+            String h = Integer.toHexString(0xFF & aMessageDigest);
+            while (h.length() < 2)
+                h = "0" + h;
+            hexString.append(h);
+        }
+
+        return hexString.toString();
+    }
+
+    public static String convertHash(String unconvertedHash) throws NoSuchAlgorithmException {
 
         MessageDigest md = MessageDigest.getInstance("MD5");
 
