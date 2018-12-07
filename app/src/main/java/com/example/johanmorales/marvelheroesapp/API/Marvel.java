@@ -10,14 +10,20 @@ import java.util.ArrayList;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 //se crea una interfaz en la cual se definen las peticiones que se van a ejecutar a la API
 
 public interface Marvel {
 
-    String hash = Autenticacion.getHash();
+    String HASH = Autenticacion.getHash();
+    String APIKEY_KEY = "apikey";
+    String HASH_KEY = "hash";
+    String TS_KEY = "ts";
 
-    @GET("v1/public/series/{seriesId}/characters?apikey=6062af1679edc54bc4ae69791d995528&ts=1&hash=db963a1820699d2ca3b1b041a2133e68")
+    //se deben agregar los valores de la url por medio de un interceptor
+
+    @GET("v1/public/series/{seriesId}/characters")
 
     /*
     * Se define la llamada con los modelos creados
@@ -26,4 +32,8 @@ public interface Marvel {
     * */
 
     Call<BaseResponse<Data<ArrayList<SuperHero>>>> getHeroes(@Path("seriesId") int seriesId);
+
+    //Ejemplo peticion de query parameters, parametros que no se usan todo el tiempo
+    @GET("v1/public/series/{seriesId}/characters")
+    Call<BaseResponse<Data<ArrayList<SuperHero>>>> getHeroesSortInverted(@Path("seriesId") int seriesId, @Query("orderBy") String orderBy);
 }
