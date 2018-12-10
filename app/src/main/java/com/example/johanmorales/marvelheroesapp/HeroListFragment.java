@@ -25,6 +25,11 @@ public class HeroListFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public interface HeroListClickListener{
+
+        void onHeroClicked(SuperHero superHero);
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,12 +67,22 @@ public class HeroListFragment extends Fragment {
         heroListRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
         //The adapter type Recycler
-        SuperHeroesAdapter heroAdapter = new SuperHeroesAdapter(superheroes, getContext());
+        SuperHeroesAdapter heroAdapter = new SuperHeroesAdapter(superheroes, getContext(), new HeroListClickListener(){
+            @Override
+            public void onHeroClicked(SuperHero superHero) {
+                //cambiar de fragment a el hero detail fragment
+                goToHeroDetailFragment();
+            }
+        });
 
         heroListRecyclerView.setAdapter(heroAdapter);
 
         // Inflate the layout for this fragment
         return view;
+    }
+
+    private void goToHeroDetailFragment() {
+        Toast.makeText(getContext(), "Click al elemento heroe!", Toast.LENGTH_SHORT).show();
     }
 
 }

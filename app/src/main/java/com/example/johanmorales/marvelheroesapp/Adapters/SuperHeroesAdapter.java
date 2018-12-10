@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.johanmorales.marvelheroesapp.HeroListFragment;
 import com.example.johanmorales.marvelheroesapp.Models.SuperHero;
 import com.example.johanmorales.marvelheroesapp.R;
 import com.squareup.picasso.Picasso;
@@ -19,10 +20,12 @@ public class SuperHeroesAdapter extends RecyclerView.Adapter<SuperHeroesAdapter.
 
     ArrayList<SuperHero> superHeroesArrayList;
     Context context;
+    HeroListFragment.HeroListClickListener heroClickListener;
 
-    public SuperHeroesAdapter(ArrayList superHeroesArrayList, Context context){
+    public SuperHeroesAdapter(ArrayList superHeroesArrayList, Context context, HeroListFragment.HeroListClickListener heroListClickListener){
         this.superHeroesArrayList = superHeroesArrayList;
         this.context = context;
+        this.heroClickListener = heroListClickListener;
     }
 
     @NonNull
@@ -41,9 +44,7 @@ public class SuperHeroesAdapter extends RecyclerView.Adapter<SuperHeroesAdapter.
         //i refers to position
         SuperHero superhero = superHeroesArrayList.get(i);
 
-        viewHolder.heroDetailTextView.setText(superhero.getName());
-
-        Picasso.get().load(superhero.getThumbnail().getFullPath()).into(viewHolder.heroImageView);
+        viewHolder.bind(context,superhero,heroClickListener);
 
         //En esta parte se usa picasso
         //viewHolder.heroImageView.setImageResource(superhero.getThumbnail());
@@ -55,7 +56,7 @@ public class SuperHeroesAdapter extends RecyclerView.Adapter<SuperHeroesAdapter.
     }
 
     //se crea el viewHolder
-    public class viewHolder extends RecyclerView.ViewHolder{
+    static public class viewHolder extends RecyclerView.ViewHolder{
 
         public ImageView heroImageView;
         public TextView heroDetailTextView;
@@ -66,5 +67,19 @@ public class SuperHeroesAdapter extends RecyclerView.Adapter<SuperHeroesAdapter.
             heroImageView = itemView.findViewById(R.id.heroPictureImageView);
             heroDetailTextView = itemView.findViewById(R.id.heroDetailNameTextView);
         }
+
+        public void bind(Context contex, final SuperHero superHero, final HeroListFragment.HeroListClickListener heroClickListener){
+            heroDetailTextView.setText(superHero.getName());
+            Picasso.get().load(superHero.getThumbnail().getFullPath()).into(heroImageView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    heroClickListener.onHeroClicked(superHero);
+                }
+            });
+        }
     }
+
+
 }
