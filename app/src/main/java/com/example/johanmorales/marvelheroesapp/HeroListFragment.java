@@ -3,6 +3,8 @@ package com.example.johanmorales.marvelheroesapp;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -19,6 +21,8 @@ import java.util.ArrayList;
 public class HeroListFragment extends Fragment {
 
     public static final String TAG = HeroListFragment.class.getSimpleName();
+    public static final String HERO_DETAIL_FRAGMENT_TAG = "HERO_DETAIL_FRAGMENT";
+    public static final String SUPER_HERO = "SUPER_HERO";
     ArrayList<SuperHero> superheroes;
 
     public HeroListFragment() {
@@ -71,7 +75,7 @@ public class HeroListFragment extends Fragment {
             @Override
             public void onHeroClicked(SuperHero superHero) {
                 //cambiar de fragment a el hero detail fragment
-                goToHeroDetailFragment();
+                goToHeroDetailFragment(superHero);
             }
         });
 
@@ -81,8 +85,30 @@ public class HeroListFragment extends Fragment {
         return view;
     }
 
-    private void goToHeroDetailFragment() {
-        Toast.makeText(getContext(), "Click al elemento heroe!", Toast.LENGTH_SHORT).show();
+    private void goToHeroDetailFragment(SuperHero superHero) {
+
+        //pasar los valores al fragment
+        //se crea un bundle
+        Bundle bundle = new Bundle();
+        //con el metodo putParcelable se agrega con la llave tipo string y el array de heroes
+        bundle.putParcelable(SUPER_HERO,superHero);
+        //
+        FragmentManager fragmentManager = getFragmentManager();
+        //se crea un fragment transaction para hacer el movimiento del fragment
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        //se instancia la clase java del fragmento
+        HeroDetailFragment heroDetailFragment = new HeroDetailFragment();
+        //se agregan argumentos con el metodo setArguments para el fragment
+        heroDetailFragment.setArguments(bundle);
+        //se REEMPLAZA la transaccion para que halla
+        fragmentTransaction.replace(R.id.placeHolderFrameLayout, heroDetailFragment, HERO_DETAIL_FRAGMENT_TAG);
+        //HERO_DETAIL_FRAGMENT_TAG--> se guarda en el backStack la transaccion para poder regresar
+        //entre fragments
+        fragmentTransaction.addToBackStack(null);
+        //se ejecuta la transaccion
+        fragmentTransaction.commit();
+
+        //Toast.makeText(getContext(), "Click al elemento heroe! "+superHero.getName(), Toast.LENGTH_SHORT).show();
     }
 
 }

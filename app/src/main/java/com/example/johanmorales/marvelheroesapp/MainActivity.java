@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         //probando retrofit
 
         //se crea la llamada de acuerdo a la implementacion hecha
-        Call<BaseResponse<Data<ArrayList<SuperHero>>>> superHeroesCall = MarvelService.getMarvelApi().getHeroesSortInverted(SERIES_ID,"-name");
+        Call<BaseResponse<Data<ArrayList<SuperHero>>>> superHeroesCall = MarvelService.getMarvelApi().getHeroesSortInverted(SERIES_ID,"name", 100);
 
         //se ejecuta el metodo para poner la peticion en fila sobreecribiendo los metodos
         superHeroesCall.enqueue(new Callback<BaseResponse<Data<ArrayList<SuperHero>>>>() {

@@ -35,5 +35,5 @@ public interface Marvel {
 
     //Ejemplo peticion de query parameters, parametros que no se usan todo el tiempo
     @GET("v1/public/series/{seriesId}/characters")
-    Call<BaseResponse<Data<ArrayList<SuperHero>>>> getHeroesSortInverted(@Path("seriesId") int seriesId, @Query("orderBy") String orderBy);
+    Call<BaseResponse<Data<ArrayList<SuperHero>>>> getHeroesSortInverted(@Path("seriesId") int seriesId, @Query("orderBy") String orderBy, @Query("limit") Integer Limit);
 }

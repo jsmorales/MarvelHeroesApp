@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
     <LinearLayout android:paddingBottom="8dp"
-    android:layout_height="80dp"
+    android:layout_height="100dp"
     android:layout_width="match_parent"
     android:orientation="horizontal"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ImageView
-        android:layout_height="80dp"
-        android:layout_width="80dp"
+        android:layout_height="100dp"
+        android:layout_width="100dp"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
+        android:background="@color/colorPrimaryDark"
+        android:padding="3dp"
         android:id="@+id/heroPictureImageView"/>
 
 
@@ -21,13 +23,15 @@
         android:orientation="vertical"
         android:padding="8dp">
 
-    <TextView android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:id="@+id/heroDetailNameTextView"
-        android:textColor="@color/colorPrimary"
-        android:textSize="25dp"
-        android:gravity="center_vertical"
-        android:text="Hero Name"/>
+        <TextView
+            android:id="@+id/heroDetailNameTextView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:padding="15dp"
+            android:text="Hero Name"
+            android:textColor="@color/colorAccent"
+            android:textSize="20dp" />
 
     </LinearLayout>
 

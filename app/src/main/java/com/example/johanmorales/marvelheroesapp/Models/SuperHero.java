@@ -76,6 +76,6 @@ public class SuperHero implements Parcelable {
         dest.writeString(name);
         dest.writeString(description);
         //de otro tipo
-        dest.writeValue(thumbnail);
+        dest.writeValue(thumbnail == null ? "-" : thumbnail);
     }
 }
