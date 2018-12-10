@@ -20,4 +20,8 @@ public class Thumbnail {
     public void setExtension(String extension) {
         this.extension = extension;
     }
+
+    public String getFullPath(){
+        return path+"."+extension;
+    }
 }
