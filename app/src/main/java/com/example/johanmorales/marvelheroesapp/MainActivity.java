@@ -1,10 +1,12 @@
 package com.example.johanmorales.marvelheroesapp;
 
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
 
@@ -57,6 +59,13 @@ public class MainActivity extends AppCompatActivity {
 
         //probando retrofit
 
+        createListHeroes();
+
+    }
+
+
+    public void createListHeroes(){
+
         //se crea la llamada de acuerdo a la implementacion hecha
         Call<BaseResponse<Data<ArrayList<SuperHero>>>> superHeroesCall = MarvelService.getMarvelApi().getHeroesSortInverted(SERIES_ID,"name", 100);
 
@@ -64,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
         superHeroesCall.enqueue(new Callback<BaseResponse<Data<ArrayList<SuperHero>>>>() {
             @Override
             public void onResponse(Call<BaseResponse<Data<ArrayList<SuperHero>>>> call, Response<BaseResponse<Data<ArrayList<SuperHero>>>> response) {
-
 
                 if(response.code() == SUCCESS_CODE){
 
@@ -81,33 +89,63 @@ public class MainActivity extends AppCompatActivity {
                     //con el metodo putParcelableArrayList se agrega con la llave tipo string y el array de heroes
                     bundle.putParcelableArrayList(SUPERHEROES_LIST,superHeroList);
 
-                    //
+                    //Se crea FragmentManager para manejar nuestro fragment
                     FragmentManager fragmentManager = getSupportFragmentManager();
-                    //se crea un fragment transaction para hacer el movimiento del fragment
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    //se instancia la clase java del fragmento
-                    HeroListFragment heroListFragment = new HeroListFragment();
 
-                    //se agregan argumentos con el metodo setArguments para el fragment
-                    heroListFragment.setArguments(bundle);
+                    //se valida si ya se tiene un fragment de tipo HeroListFragment por medio dl tag que se asigna en la transaccion
+                    //que se agrega en fragmentTransaction.add
+                    HeroListFragment savedHeroListFragment = (HeroListFragment) fragmentManager.findFragmentByTag(HERO_LIST_FRAGMENT_TAG);
 
-                    //se agrega la transaccion
-                    fragmentTransaction.add(R.id.placeHolderFrameLayout, heroListFragment, HERO_LIST_FRAGMENT_TAG);
-                    //se ejecuta la transaccion
-                    fragmentTransaction.commit();
+                    if(savedHeroListFragment == null) {
+                        //si no encuentra el fragment crea uno nuevo, de lo contrario no hace nada
+
+                        //se crea un fragment transaction para hacer el movimiento del fragment
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        //se instancia la clase java del fragmento
+                        HeroListFragment heroListFragment = new HeroListFragment();
+
+                        //se agregan argumentos con el metodo setArguments para el fragment
+                        heroListFragment.setArguments(bundle);
+
+                        //se agrega la transaccion
+                        fragmentTransaction.add(R.id.placeHolderFrameLayout, heroListFragment, HERO_LIST_FRAGMENT_TAG);
+                        //se ejecuta la transaccion
+                        fragmentTransaction.commit();
+
+                    }
 
                 }else{
-                    Toast.makeText(MainActivity.this, "Respuesta: "+response.code(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(MainActivity.this, "Respuesta: "+response.code(), Toast.LENGTH_SHORT).show();
+                    getRetryMethod("Respuesta: "+response.code()+", Error de servidor o de petición errónea.");
                 }
 
             }
 
             @Override
             public void onFailure(Call<BaseResponse<Data<ArrayList<SuperHero>>>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Algo salió mal.", Toast.LENGTH_SHORT).show();
+
+                //Toast.makeText(MainActivity.this, "Algo salió mal.", Toast.LENGTH_SHORT).show();
+
+                getRetryMethod("Error en la petición de Heroes");
             }
 
         });
 
     }
+
+    public void getRetryMethod(String mensaje){
+
+        //uso de snackbar
+        Snackbar snackbar = Snackbar.make(framelayout,mensaje,Snackbar.LENGTH_INDEFINITE)
+                .setAction("Intentar de Nuevo", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(MainActivity.this, "Intentando de nuevo Lista de Heroes.", Toast.LENGTH_SHORT).show();
+                        createListHeroes();
+                    }
+                });
+
+        snackbar.show();
+    }
+
 }

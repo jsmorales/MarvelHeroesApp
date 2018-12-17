@@ -41,6 +41,8 @@ public class HeroListFragment extends Fragment {
         //en esta etapa del ciclo de vida solo se utiliza para obtener datos
         //no se puede utilizar para nada grafico
 
+        Log.d(TAG, "Fragmento HeroList creado.");
+
         Bundle bundle = getArguments();
 
         superheroes = bundle.getParcelableArrayList(MainActivity.SUPERHEROES_LIST);
