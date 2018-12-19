@@ -7,11 +7,9 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.johanmorales.marvelheroesapp.Adapters.SuperHeroesAdapter;
 import com.example.johanmorales.marvelheroesapp.Models.SuperHero;
@@ -41,21 +39,22 @@ public class HeroListFragment extends Fragment {
         //en esta etapa del ciclo de vida solo se utiliza para obtener datos
         //no se puede utilizar para nada grafico
 
-        Log.d(TAG, "Fragmento HeroList creado.");
+        //Log.d(TAG, "Fragmento HeroList creado.");
 
-        Bundle bundle = getArguments();
+        if(getArguments() != null){
 
-        superheroes = bundle.getParcelableArrayList(MainActivity.SUPERHEROES_LIST);
+            superheroes = getArguments().getParcelableArrayList(MainActivity.SUPERHEROES_LIST);
+        }
 
         //validar que la lista de heroes no sea null
-        if(superheroes == null){
-            Log.d(TAG, "No hay valores desde el bundle.");
+        /*if(superheroes == null){
+            //Log.d(TAG, "No hay valores desde el bundle.");
             Toast.makeText(getContext(), "No se pudo obtener la lista.", Toast.LENGTH_SHORT).show();
         }else{
             //Se obtuvo la lista de heroes correctamente.
             //getContext() obtiene el contexto actual para el toast
             Toast.makeText(getContext(), "El primero super Heroe es: "+superheroes.get(0).getName(), Toast.LENGTH_SHORT).show();
-        }
+        }*/
 
     }
 

@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }else{
                     //Toast.makeText(MainActivity.this, "Respuesta: "+response.code(), Toast.LENGTH_SHORT).show();
-                    getRetryMethod("Respuesta: "+response.code()+", Error de servidor o de petición errónea.");
+                    getRetryMethod("Respuesta: "+response.code()+", "+getString(R.string.error_service_message));
                 }
 
             }
@@ -126,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //Toast.makeText(MainActivity.this, "Algo salió mal.", Toast.LENGTH_SHORT).show();
 
-                getRetryMethod("Error en la petición de Heroes");
+                getRetryMethod(getString(R.string.network_error_message));
             }
 
         });
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
 
         //uso de snackbar
         Snackbar snackbar = Snackbar.make(framelayout,mensaje,Snackbar.LENGTH_INDEFINITE)
-                .setAction("Intentar de Nuevo", new View.OnClickListener() {
+                .setAction(getString(R.string.retry_message), new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Toast.makeText(MainActivity.this, "Intentando de nuevo Lista de Heroes.", Toast.LENGTH_SHORT).show();

@@ -4,4 +4,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="copyright_marvel">Copyright Marvel</string>
+    <string name="network_error_message">Error en la petición de Heroes</string>
+    <string name="error_service_message">Error de servidor.</string>
+    <string name="retry_message">Intentar de Nuevo.</string>
+    <string name="no_information_message">No information avaible.</string>
 </resources>

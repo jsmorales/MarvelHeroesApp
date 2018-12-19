@@ -61,8 +61,11 @@ public class HeroDetailFragment extends Fragment {
         heroPictureImageView = view.findViewById(R.id.heroDetailThumbnailTextView);
 
         if(superHero != null) {
+
+            Log.d(TAG, "La descripcion es: "+superHero.getDescription());
+
             heroDetailTitleTextView.setText(superHero.getName());
-            heroDetailDescription.setText(superHero.getDescription());
+            heroDetailDescription.setText(!superHero.getDescription().equals("") ? superHero.getDescription() :  getString(R.string.no_information_message));
 
             Log.d(TAG,"Path image hero: "+superHero.getThumbnail().getFullPath());
             Picasso.get().load(superHero.getThumbnail().getFullPath()).into(heroPictureImageView);
